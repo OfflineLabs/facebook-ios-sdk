@@ -230,11 +230,13 @@ static NSString* kSDKVersion = @"2";
 	NSMutableDictionary *params = [[[NSMutableDictionary alloc] init] autorelease];
 	for (NSString *pair in pairs) {
 		NSArray *kv = [pair componentsSeparatedByString:@"="];
-		NSString *val =
-    [[kv objectAtIndex:1]
-     stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        if (kv.count > 1) {
+            NSString *val =
+        [[kv objectAtIndex:1]
+         stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
-		[params setObject:val forKey:[kv objectAtIndex:0]];
+            [params setObject:val forKey:[kv objectAtIndex:0]];
+        }
 	}
   return params;
 }
