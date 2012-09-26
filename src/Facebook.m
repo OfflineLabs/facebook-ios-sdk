@@ -20,7 +20,7 @@
 #import "FBRequest.h"
 #import "FBError.h"
 #import "FBSessionManualTokenCachingStrategy.h"
-#import "JSON.h"
+#import "FBSBJSON.h"
 #import "FBSession+Internal.h"
 #import "FBUtility.h"
 
@@ -253,9 +253,9 @@ static NSString *const FBexpirationDatePropertyName = @"expirationDate";
         NSArray *permissions = self.session.permissions;
         [self.session close];    
         self.session = [[[FBSession alloc] initWithAppID:_appId
-                                             permissions:permissions 
-                                         urlSchemeSuffix:_urlSchemeSuffix 
-                                      tokenCacheStrategy:self.tokenCaching] 
+                                             permissions:permissions
+                                         urlSchemeSuffix:_urlSchemeSuffix
+                                      tokenCacheStrategy:self.tokenCaching]
                            autorelease];
     
         // get the session into a valid state
@@ -303,9 +303,9 @@ static NSString *const FBexpirationDatePropertyName = @"expirationDate";
     [self.tokenCaching clearToken];
     
     self.session = [[[FBSession alloc] initWithAppID:_appId
-                                        permissions:permissions 
-                                    urlSchemeSuffix:_urlSchemeSuffix 
-                                 tokenCacheStrategy:self.tokenCaching]
+                                         permissions:permissions
+                                     urlSchemeSuffix:_urlSchemeSuffix
+                                  tokenCacheStrategy:self.tokenCaching]
                     autorelease];
     
     [self.session openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
@@ -345,11 +345,11 @@ static NSString *const FBexpirationDatePropertyName = @"expirationDate";
 
 -(NSDate*)expirationDate {
     return self.tokenCaching.expirationDate;
-    self.hasUpdatedAccessToken = YES;
 }
 
 -(void)setExpirationDate:(NSDate *)expirationDate {
     self.tokenCaching.expirationDate = expirationDate;
+    self.hasUpdatedAccessToken = YES;
 }
 
 /**
@@ -697,7 +697,7 @@ static NSString *const FBexpirationDatePropertyName = @"expirationDate";
             id fbid = [params objectForKey:@"to"];
             if (fbid != nil) {
                 // if value parses as a json array expression get the list that way
-                SBJsonParser *parser = [[[SBJsonParser alloc] init] autorelease];
+                FBSBJsonParser *parser = [[[FBSBJsonParser alloc] init] autorelease];
                 id fbids = [parser objectWithString:fbid];
                 if (![fbids isKindOfClass:[NSArray class]]) {
                     // otherwise seperate by commas (handles the singleton case too)
