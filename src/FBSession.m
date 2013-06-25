@@ -870,6 +870,12 @@ static FBSession *g_activeSession = nil;
     BOOL didRequestAuthorize = NO;
     
     // do we want and have the ability to attempt integrated authn
+    
+    // staufman - Disallowing native login for now until Facebook sorts out all of their
+    // native login bugs.
+    tryIntegratedAuth = NO;
+    //
+    
     if (!didRequestAuthorize &&
         tryIntegratedAuth &&
         (!isReauthorize || self.accessTokenData.loginType == FBSessionLoginTypeSystemAccount) &&
