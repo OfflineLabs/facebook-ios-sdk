@@ -887,7 +887,10 @@ static FBSession *g_activeSession = nil;
                                    FBLoginUXIOS, FBLoginUXSDK,
                                    nil];
     if (permissions != nil) {
-        params[@"scope"] = [permissions componentsJoinedByString:@","];
+        NSString *scope = [permissions componentsJoinedByString:@","];
+        if (scope) {
+            params[@"scope"] = scope;
+        }
     }
     if (_urlSchemeSuffix) {
         params[@"local_client_id"] = _urlSchemeSuffix;
